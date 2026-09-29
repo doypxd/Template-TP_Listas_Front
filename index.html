@@ -12,11 +12,32 @@
     </header>
 
     <main class="comida-container" id="comidaContainer">
-        <!-- Contenido Dinamico -->
+        <article class="card">
+          <h1>Chorizo</h1>
+          <div class="row">
+          <span class="chip azul" title="Categoria">Parrilla</span>
+          <span class="chip gris" title="Provincia">Buenos Aires</span>
+          </div>
+          <h4 class="ingredientes">Ingredientes:</h4>
+          <div class="row">
+            <span class="chip azul" title="Categoria">Pollo</span>
+          </div>
+        </article>
     </main>     
 
     <section class="addFood">
       <!-- Para el form para agregar comida -->
+       <h1>Suma tu alimento</h1>
+       <p>Nombre</p>
+      <input id="inputNombre">
+      <p>Categoria (asado, frito, etc)</p>
+      <input id="inputCategoria">
+      <p>Provincia Originaria (solo comida argentina)</p>
+      <input id="inputProvincia">
+      <p>Ingresa los ingredientes</p>
+      <small>Escribi solo el nombre, y luego separalos por comas.</small>
+      <input id="inputIngredientes">
+      <button id="agregarComida">Sumar Comida</button>
     </section>
 
     <script type="module" src="./main.js"></script>
