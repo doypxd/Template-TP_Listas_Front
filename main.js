@@ -1,3 +1,6 @@
+
+let comidas = [];
+
 /*
     Cargar comidas en memoria desde el JSON
 */
@@ -5,16 +8,14 @@ fetch('./data/comidas.json')        // Ruta al archivo JSON
 .then(response => response.json())  // Convertir la respuesta en JSON
 .then(data => {                     // Aquí tienes acceso al JSON en formato de objeto JS
   console.log('Comidas cargadas desde JSON:');
-  console.log(data);
   comidas = data;                   // Asignar el JSON a la variable comidas
+  console.log(comidas);
   renderizarComidas();
 })
 .catch(error => {                   // Manejo de errores al leer el archivo JSON
   console.error('Error al leer el archivo JSON:', error);
 })
 
-//
-let comidas = [];
 
 const container = document.getElementById('comidaContainer');
 const nuevoItem = document.getElementById('agregarComida');
@@ -52,12 +53,13 @@ nuevoItem.addEventListener("click", () => {
   const ingredientes = document.getElementById('inputIngredientes').value.split(',');
 
   if (typeof ingredientes === "object") {
-  comidas.push = {
+  comidas.push({
     nombre: nombre,
     categoria: categoria,
     provincia: provincia,
     ingredientes: ingredientes
-  };
+  });
+  console.log(comidas);
   alert("Listo!");
   renderizarComidas();
   } else {
