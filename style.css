@@ -46,11 +46,15 @@
 }
 
 .gris {
-  background-color: grey;
+  background-color: rgb(184, 184, 184);
 }
 
 .azul {
   background-color: aqua;
+}
+
+.verde {
+  background-color: lightgreen;
 }
 
 .addFood {

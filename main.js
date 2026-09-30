@@ -26,7 +26,7 @@ function renderizarComidas() {
     let ingredientesHtml = "";
     for (const ingrediente of comida.ingredientes) {
       ingredientesHtml += `
-      <span class="chip azul" title="Categoria">${ingrediente}</span>
+      <span class="chip verde" title="Ingrediente">${ingrediente}</span>
       `;
     };
     htmlInterior += `
