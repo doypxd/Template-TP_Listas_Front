@@ -5,24 +5,47 @@ let comidas = [];
     Cargar comidas en memoria desde el JSON
 */
 fetch('./data/comidas.json')        // Ruta al archivo JSON
-.then(response => response.json())  // Convertir la respuesta en JSON
-.then(data => {                     // Aquí tienes acceso al JSON en formato de objeto JS
-  console.log('Comidas cargadas desde JSON:');
-  comidas = data;                   // Asignar el JSON a la variable comidas
-  console.log(comidas);
-  renderizarComidas();
-})
-.catch(error => {                   // Manejo de errores al leer el archivo JSON
-  console.error('Error al leer el archivo JSON:', error);
-})
+  .then(response => response.json())  // Convertir la respuesta en JSON
+  .then(data => {                     // Aquí tienes acceso al JSON en formato de objeto JS
+    console.log('Comidas cargadas desde JSON:');
+    comidas = data;                   // Asignar el JSON a la variable comidas
+    console.log(comidas);
+    renderizarComidas();
+  })
+  .catch(error => {                   // Manejo de errores al leer el archivo JSON
+    console.error('Error al leer el archivo JSON:', error);
+  })
 
 
 const container = document.getElementById('comidaContainer');
 const nuevoItem = document.getElementById('agregarComida');
+const categoria = document.getElementById('categoria');
+
+function configurarCategorias() {
+  let opciones = []
+  for (const comida of comidas) {
+    if (!opciones.some((opcion) => opcion === comida.categoria)) {
+      opciones.push(comida.categoria)
+    };
+  };
+  categoria.innerHTML = '';
+  const nuevaOpcion = document.createElement('option');
+  for (const opcion of opciones) {
+    nuevaOpcion.value = opcion;
+    nuevaOpcion.text = opcion;
+
+    categoria.innerHTML += (nuevaOpcion);
+  };
+}
 
 function renderizarComidas() {
+  const filtroCategoria = categoria.value;
+  let listaComidasRenderizar = comidas;
+  if (!(filtroCategoria === "todos")) {
+    listaComidasRenderizar = listaComidasRenderizar.filter(comida => comida.categoria === filtroCategoria);
+  };
   let htmlInterior = "";
-  for (const comida of comidas) {
+  for (const comida of listaComidasRenderizar) {
     let ingredientesHtml = "";
     for (const ingrediente of comida.ingredientes) {
       ingredientesHtml += `
@@ -44,6 +67,7 @@ function renderizarComidas() {
     `;
   };
   container.innerHTML = htmlInterior;
+  configurarCategorias();
 };
 
 nuevoItem.addEventListener("click", () => {
@@ -53,17 +77,22 @@ nuevoItem.addEventListener("click", () => {
   const ingredientes = document.getElementById('inputIngredientes').value.split(',');
 
   if (typeof ingredientes === "object") {
-  comidas.push({
-    nombre: nombre,
-    categoria: categoria,
-    provincia: provincia,
-    ingredientes: ingredientes
-  });
-  console.log(comidas);
-  alert("Listo!");
-  renderizarComidas();
+    comidas.push({
+      nombre: nombre,
+      categoria: categoria,
+      provincia: provincia,
+      ingredientes: ingredientes
+    });
+    console.log(comidas);
+    alert("Listo!");
+    renderizarComidas();
   } else {
     alert("Escribi bien los ingredientes, separados por comas.");
   };
 
+});
+
+categoria.addEventListener("change", () => {
+  console.log("cambio categoria:" + categoria.value);
+  renderizarComidas();
 });
