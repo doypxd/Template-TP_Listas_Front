@@ -13,6 +13,30 @@
   height: fit-content;
 }
 
+header {
+  margin: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+select {
+  height: 2.3rem;
+  width: 16rem;
+  font-size: large;
+  border-radius: 1rem;
+  border: 1px black solid
+}
+input {
+  height: 2.3rem;
+  width: 25rem;
+  font-size: large;
+  border-radius: 1rem;
+  border: 1px black solid;
+  padding: 6px;
+  margin-left: auto;
+}
+
 .card {
   background-color: rgb(245, 245, 245);
   overflow: auto;

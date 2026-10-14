@@ -4,13 +4,15 @@ let comidas = [];
 /*
     Cargar comidas en memoria desde el JSON
 */
-fetch('./data/comidas.json')        // Ruta al archivo JSON
+fetch('./data/comidas-extended.json')        // Ruta al archivo JSON
   .then(response => response.json())  // Convertir la respuesta en JSON
   .then(data => {                     // Aquí tienes acceso al JSON en formato de objeto JS
     console.log('Comidas cargadas desde JSON:');
     comidas = data;                   // Asignar el JSON a la variable comidas
     console.log(comidas);
     renderizarComidas();
+    configurarCategorias();
+    configurarProvincias();
   })
   .catch(error => {                   // Manejo de errores al leer el archivo JSON
     console.error('Error al leer el archivo JSON:', error);
@@ -20,29 +22,66 @@ fetch('./data/comidas.json')        // Ruta al archivo JSON
 const container = document.getElementById('comidaContainer');
 const nuevoItem = document.getElementById('agregarComida');
 const categoria = document.getElementById('categoria');
+const provincia = document.getElementById('provincia');
+const buscar = document.getElementById('buscar')
 
 function configurarCategorias() {
-  let opciones = []
+  let opciones = ['Todos']
   for (const comida of comidas) {
     if (!opciones.some((opcion) => opcion === comida.categoria)) {
       opciones.push(comida.categoria)
     };
   };
-  categoria.innerHTML = '';
-  const nuevaOpcion = document.createElement('option');
+  categoria.innerHTML = ``;
   for (const opcion of opciones) {
+    const nuevaOpcion = document.createElement('option');
     nuevaOpcion.value = opcion;
-    nuevaOpcion.text = opcion;
+    if (opcion === 'Todos'){
+      nuevaOpcion.text = 'Todas las categorias';
+    } else {
+      nuevaOpcion.text = opcion;
 
-    categoria.innerHTML += (nuevaOpcion);
+    }
+    categoria.appendChild(nuevaOpcion);
   };
-}
+};
+function configurarProvincias() {
+  let opciones = ['Todos']
+  for (const comida of comidas) {
+    if (!opciones.some((opcion) => opcion === comida.provincia)) {
+      opciones.push(comida.provincia)
+    };
+  };
+  provincia.innerHTML = ``;
+  for (const opcion of opciones) {
+    const nuevaOpcion = document.createElement('option');
+    nuevaOpcion.value = opcion;
+    if (opcion === 'Todos'){
+      nuevaOpcion.text = 'Todas las provincias';
+    } else {
+      nuevaOpcion.text = opcion;
+
+    }
+    provincia.appendChild(nuevaOpcion);
+  };
+};
 
 function renderizarComidas() {
   const filtroCategoria = categoria.value;
+  const filtroProvincia = provincia.value;
+
   let listaComidasRenderizar = comidas;
-  if (!(filtroCategoria === "todos")) {
+  if (!(filtroCategoria === "Todos")) {
     listaComidasRenderizar = listaComidasRenderizar.filter(comida => comida.categoria === filtroCategoria);
+  };
+  if (!(filtroProvincia === "Todos")) {
+    listaComidasRenderizar = listaComidasRenderizar.filter(comida => comida.provincia === filtroProvincia);
+  };
+  if (buscar.value) {
+    listaComidasRenderizar = listaComidasRenderizar.filter(comida => {
+      const nombre = comida.nombre.toLowerCase()
+      return nombre.includes(buscar.value.toLowerCase());
+    });
   };
   let htmlInterior = "";
   for (const comida of listaComidasRenderizar) {
@@ -67,7 +106,6 @@ function renderizarComidas() {
     `;
   };
   container.innerHTML = htmlInterior;
-  configurarCategorias();
 };
 
 nuevoItem.addEventListener("click", () => {
@@ -86,13 +124,18 @@ nuevoItem.addEventListener("click", () => {
     console.log(comidas);
     alert("Listo!");
     renderizarComidas();
+    configurarCategorias();
   } else {
     alert("Escribi bien los ingredientes, separados por comas.");
   };
-
 });
 
 categoria.addEventListener("change", () => {
-  console.log("cambio categoria:" + categoria.value);
+  renderizarComidas();
+});
+provincia.addEventListener("change", () => {
+  renderizarComidas();
+});
+buscar.addEventListener("input", () => {
   renderizarComidas();
 });
