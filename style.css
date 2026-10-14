@@ -27,7 +27,7 @@ select {
   border-radius: 1rem;
   border: 1px black solid
 }
-input {
+.search {
   height: 2.3rem;
   width: 25rem;
   font-size: large;
